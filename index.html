@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#070b12" />
+  <meta name="description" content="SecureNET - Soluciones de red seguras con protección Anti-DDoS, baja latencia y Gaming VPN" />
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAHsSURBVHgB7VdLUhtBEH1dCiU+xiHYBhu8Ihdw7AuYq7AiyQ1wbpBwA3MDcgNwA3MDcgNwA+QGhC9gK5w9M1I1X6m7p4eR0CReqVZTUz3T/fq9HuB/giQG/G8A/tw+eL14fP2ZEpbXj4/vr/bn01eccA6T0Nk9/z34+Xj3+U2A2QPdA3jP9Y+7396eHq4/rYqA42SNN2c/XgIAIPgJZLK2+qbLwE1xH/C09Qj3dH1zCW0JAIlJEQDLFwFIygoAvCQAkD6Izz9W12ZNi+bxW+PcCAAVq0gWpBEAJEsJAMksjYAkmSVlS2ZxXgYg3v0qAiDJFwFIMk8EgFciE5enJp4qjQYgSc4TASi/JwJQfE8EoPSeiL8AvKcCkFp3CyjX3YoANM8lAkB+kAhAfiERgPxKIgD5rUQA8j4RgHxIBCD3RADyP4kA5EMiALknApCfSAQg90QA8p4IQO6JAORHIgC5JwKQeyIAeU8EIPdEAPJDBPCeu0p2EfkRAshu5b2n7iZ1K+89Wzcq+T4CeJ4EMl3d83zrA34g+fHlA7wN0J7n2x1wD/7Fe54PTYC2PN/uAB/Aw/v8jYl2PqANz7c7wJ9AAK15vu2BvuH5dgc8/7pzZ9uugW14vt2R7Rq2AUyGzw8f9eZqAAAAAElFTkSuQmCC" />
+  <title>SecureNET | VPN Solutions</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --bg:#0a0e17;
+      --bg-gradient:linear-gradient(135deg,#0a0e17 0%,#0d1525 50%,#0a1422 100%);
+      --card:rgba(16,42,67,0.7);
+      --border:rgba(64,224,208,0.3);
+      --text:rgba(255,255,255,.95);
+      --muted:#b0d0ff;
+      --neonCyan:#40e0d0;
+      --neonBlue:#00b4ff;
+      --neonPurple:#8c55ff;
+      --neonPink:#ff55ff;
+      --shadowDeep:0 25px 80px rgba(0,50,100,0.4);
+      --glass:rgba(255,255,255,0.05);
+      --ease:cubic-bezier(.2,.8,.2,1);
+    }
+    [data-theme=light]{
+      --bg:#f0f4ff;
+      --bg-gradient:linear-gradient(135deg,#f0f4ff 0%,#fff 50%,#e6f0ff 100%);
+      --card:rgba(255,255,255,0.9);
+      --border:rgba(0,150,200,0.3);
+      --text:#0a0e17;
+      --muted:#1a2a3a;
+      --neonCyan:#0096c8;
+      --neonBlue:#0066ff;
+      --neonPurple:#6633cc;
+      --neonPink:#cc33cc;
+    }
+    [data-theme=hacker]{
+      --bg:#0f0f0f;
+      --bg-gradient:linear-gradient(135deg,#0f0f0f 0%,#1a1a1a 50%,#0a0a0a 100%);
+      --card:#0a0a0a;
+      --border:#0f0;
+      --text:#0f0;
+      --muted:#0c0;
+      --neonCyan:#0f0;
+      --neonBlue:#0d0;
+      --neonPurple:#0c0;
+      --neonPink:#0e0;
+      font-family:'Courier New',monospace;
+    }
+    [data-theme=hacker] button{background:#0f0!important;color:#000!important;box-shadow:0 0 20px #0f0;}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg-gradient);
+      color:var(--text);
+      min-height:100vh;
+      transition:.3s;
+      overflow-x:hidden;
+    }
+    #canvas-3d{
+      position:fixed;
+      top:0;left:0;
+      width:100%;height:100%;
+      z-index:-1;
+      pointer-events:none;
+    }
+    .app{min-height:100vh;display:flex;flex-direction:column;}
+
+    /* HEADER FIJO */
+    .main-header{
+      background:rgba(10,20,30,0.95);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      position:fixed;
+      top:0;left:0;right:0;
+      z-index:9999;
+      padding:12px 0;
+    }
+    .header-spacer{height:100px;}
+
+    /* MENU HAMBURGUESA */
+    .menu-container{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 20px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .logo-icon{font-size:32px;filter:drop-shadow(0 0 10px var(--neonCyan));}
+    .logo-text h1{
+      font-size:20px;
+      font-weight:700;
+      background:linear-gradient(45deg,#fff,var(--neonCyan),var(--neonBlue));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .logo-text span{font-size:12px;color:var(--muted);}
+
+    /* BOTON HAMBURGUESA */
+    .hamburger{
+      width:45px;height:45px;
+      background:rgba(64,224,208,0.1);
+      border:1px solid var(--border);
+      border-radius:12px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      transition:.3s;
+      z-index:10000;
+    }
+    .hamburger:hover{
+      background:rgba(64,224,208,0.2);
+      border-color:var(--neonCyan);
+    }
+    .hamburger span{
+      width:25px;height:2px;
+      background:var(--neonCyan);
+      border-radius:2px;
+      transition:.3s;
+    }
+    .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px);}
+    .hamburger.active span:nth-child(2){opacity:0;}
+    .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
+
+    /* DASHBOARD MENU LATERAL */
+    .dashboard-menu{
+      position:fixed;
+      top:80px;right:-300px;
+      width:280px;
+      height:calc(100vh - 80px);
+      background:rgba(10,20,30,0.95);
+      backdrop-filter:blur(20px);
+      border-left:1px solid var(--border);
+      padding:30px 20px;
+      transition:right 0.4s var(--ease);
+      z-index:9998;
+      box-shadow:-5px 0 30px rgba(0,0,0,0.5);
+    }
+    .dashboard-menu.open{right:0;}
+    .dashboard-header{
+      font-size:18px;
+      color:var(--neonCyan);
+      margin-bottom:30px;
+      padding-bottom:15px;
+      border-bottom:1px solid var(--border);
+      text-transform:uppercase;
+      letter-spacing:2px;
+    }
+    .dashboard-item{
+      display:flex;
+      align-items:center;
+      gap:15px;
+      padding:15px;
+      color:var(--muted);
+      text-decoration:none;
+      border-radius:12px;
+      margin-bottom:5px;
+      transition:.2s;
+      cursor:pointer;
+      font-size:15px;
+    }
+    .dashboard-item:hover{
+      background:rgba(64,224,208,0.1);
+      color:var(--neonCyan);
+    }
+    .dashboard-item.active{
+      background:linear-gradient(45deg,var(--neonBlue),var(--neonCyan));
+      color:white;
+    }
+    .dashboard-footer{
+      position:absolute;
+      bottom:30px;
+      left:20px;
+      right:20px;
+    }
+    .theme-selector-dashboard{
+      display:flex;
+      gap:5px;
+      background:rgba(0,0,0,0.3);
+      padding:4px;
+      border-radius:50px;
+      border:1px solid var(--border);
+      margin-top:15px;
+    }
+    .theme-btn-dashboard{
+      flex:1;
+      padding:8px;
+      border:none;
+      background:transparent;
+      color:var(--muted);
+      border-radius:50px;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .theme-btn-dashboard.active{
+      background:var(--neonCyan);
+      color:var(--bg);
+    }
+
+    /* MAIN CONTENT */
+    .container{
+      max-width:1400px;
+      margin:0 auto;
+      padding:0 20px;
+      width:100%;
+    }
+    .tab-content{display:none;animation:fadeIn .4s;}
+    .tab-content.active{display:block;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    .section-title{
+      font-size:32px;
+      margin:30px 0 20px;
+      text-align:center;
+      background:linear-gradient(45deg,var(--neonCyan),var(--neonBlue),var(--neonPurple));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    /* WELCOME SECTION MODERNO */
+    .welcome-section{
+      min-height:80vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .hero-content{
+      text-align:center;
+      max-width:900px;
+      padding:50px;
+      background:rgba(20,30,50,0.4);
+      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      border-radius:40px;
+      box-shadow:0 30px 60px rgba(0,0,0,0.4);
+    }
+    .hero-badge{
+      display:inline-block;
+      background:linear-gradient(45deg,var(--neonCyan),var(--neonBlue));
+      padding:8px 20px;
+      border-radius:50px;
+      color:white;
+      margin-bottom:30px;
+      font-weight:600;
+      letter-spacing:1px;
+    }
+    .hero-title{
+      font-size:clamp(40px,8vw,72px);
+      font-weight:800;
+      line-height:1.1;
+      margin-bottom:30px;
+    }
+    .gradient-text{
+      background:linear-gradient(45deg,var(--neonCyan),var(--neonBlue),var(--neonPurple),var(--neonPink));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-size:300%;
+      animation:gradient 8s ease infinite;
+    }
+    @keyframes gradient{0%{background-position:0%}50%{background-position:100%}100%{background-position:0%}}
+    .hero-description{
+      font-size:18px;
+      color:var(--muted);
+      margin-bottom:40px;
+      line-height:1.6;
+    }
+    .hero-stats{
+      display:flex;
+      justify-content:center;
+      gap:40px;
+      margin:40px 0;
+      flex-wrap:wrap;
+    }
+    .stat-item{
+      text-align:center;
+      padding:20px 30px;
+      background:rgba(0,0,0,0.3);
+      border-radius:20px;
+      border:1px solid var(--border);
+    }
+    .stat-number{
+      font-size:42px;
+      font-weight:800;
+      color:var(--neonCyan);
+      text-shadow:0 0 20px var(--neonCyan);
+    }
+    .btn-primary{
+      background:linear-gradient(45deg,var(--neonBlue),var(--neonCyan),var(--neonPurple));
+      background-size:200%;
+      animation:btnGradient 3s ease infinite;
+      color:white;
+      border:none;
+      padding:16px 40px;
+      border-radius:50px;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.3s;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+    }
+    @keyframes btnGradient{0%{background-position:0%}50%{background-position:100%}100%{background-position:0%}}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(64,224,208,0.4);}
+
+    /* COMING SOON CARDS */
+    .coming-soon-card{
+      background:rgba(20,30,50,0.6);
+      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      border-radius:30px;
+      padding:50px;
+      margin:40px 0;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .coming-soon-card::before{
+      content:"⏳ COMING SOON";
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%) rotate(-10deg);
+      font-size:60px;
+      font-weight:800;
+      color:rgba(255,255,255,0.03);
+      white-space:nowrap;
+      pointer-events:none;
+      z-index:1;
+    }
+    .coming-soon-display{
+      font-size:40px;
+      color:#666;
+      filter:blur(2px);
+      font-family:'Courier New',monospace;
+      margin:30px 0;
+    }
+
+    /* LOCATIONS GRID MODERNA */
+    .locations-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:25px;
+      margin:40px 0;
+    }
+    .location-card{
+      background:rgba(20,30,50,0.6);
+      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:25px;
+      cursor:pointer;
+      transition:.3s;
+    }
+    .location-card:hover{
+      transform:translateY(-8px);
+      border-color:var(--neonCyan);
+      box-shadow:0 20px 40px rgba(64,224,208,0.2);
+    }
+    .location-card.selected{
+      border-color:var(--neonCyan);
+      background:rgba(64,224,208,0.1);
+      box-shadow:0 0 30px rgba(64,224,208,0.3);
+    }
+    .location-card h3{
+      font-size:22px;
+      color:var(--neonCyan);
+      margin-bottom:10px;
+    }
+
+    /* PLANS GRID MODERNA - CORREGIDO */
+    .plans-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:30px;
+      margin:40px 0;
+    }
+    .plan-card{
+      background:rgba(20,30,50,0.7);
+      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      border-radius:30px;
+      padding:30px;
+      transition:.3s;
+      display:flex;
+      flex-direction:column;
+    }
+    .plan-card:hover{
+      transform:translateY(-10px);
+      border-color:var(--neonCyan);
+      box-shadow:0 30px 50px rgba(64,224,208,0.2);
+    }
+    .plan-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:25px;
+      gap:15px;
+    }
+    .plan-name{
+      font-size:24px;
+      font-weight:800;
+      flex:1;
+    }
+    .plan-card.basic .plan-name{color:var(--neonBlue);}
+    .plan-card.standard .plan-name{color:var(--neonCyan);}
+    .plan-card.premium .plan-name{color:var(--neonPurple);}
+    .plan-card.dual .plan-name{color:var(--neonPink);}
+    .plan-price{
+      background:rgba(0,0,0,0.4);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:12px 20px;
+      font-size:24px;
+      font-weight:800;
+      color:white;
+      text-shadow:0 0 10px var(--neonCyan);
+      white-space:nowrap;
+      min-width:120px;
+      text-align:center;
+    }
+    .feature-item{
+      display:flex;
+      align-items:center;
+      gap:15px;
+      padding:12px 15px;
+      background:rgba(0,0,0,0.2);
+      border-radius:16px;
+      margin:8px 0;
+    }
+    .plan-button{
+      background:linear-gradient(45deg,var(--neonBlue),var(--neonCyan));
+      color:white;
+      border:none;
+      padding:16px;
+      border-radius:20px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.3s;
+      text-align:center;
+      text-decoration:none;
+      margin-top:20px;
+      font-size:16px;
+    }
+
+    /* STATUS BADGES CORREGIDOS */
+    .status-badge{
+      padding:6px 16px;
+      border-radius:50px;
+      font-size:13px;
+      font-weight:600;
+      display:inline-block;
+      white-space:nowrap;
+    }
+    .status-available{
+      background:rgba(64,224,208,0.2);
+      color:var(--neonCyan);
+      border:1px solid rgba(64,224,208,0.3);
+    }
+    .status-soon{
+      background:rgba(255,170,0,0.2);
+      color:#ffaa00;
+      border:1px solid rgba(255,170,0,0.3);
+    }
+
+    /* SOCIAL MEDIA SECTION */
+    .social-section{
+      background:rgba(20,30,50,0.6);
+      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      border-radius:30px;
+      padding:40px;
+      margin:40px 0;
+    }
+    .social-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      margin-top:30px;
+    }
+    .social-card{
+      display:flex;
+      align-items:center;
+      gap:20px;
+      padding:20px 25px;
+      background:rgba(0,0,0,0.3);
+      border:1px solid var(--border);
+      border-radius:20px;
+      text-decoration:none;
+      transition:.3s;
+    }
+    .social-card:hover{
+      transform:translateY(-5px);
+      border-color:var(--neonCyan);
+      box-shadow:0 10px 30px rgba(64,224,208,0.2);
+    }
+    .social-icon{
+      width:50px;
+      height:50px;
+      border-radius:15px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+    }
+    .instagram{background:linear-gradient(45deg,#f09433,#d62976,#962fbf);}
+    .youtube{background:#ff0000;}
+    .tiktok{background:#000000;border:1px solid #ff0050;}
+    .social-info{
+      flex:1;
+    }
+    .social-name{
+      color:white;
+      font-weight:700;
+      margin-bottom:5px;
+    }
+    .social-handle{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* CONTACT SECTION ULTRA MODERNA */
+    .contact-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+      gap:30px;
+      margin:40px 0;
+    }
+    .contact-card{
+      background:rgba(20,30,50,0.7);
+      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      border-radius:30px;
+      padding:40px;
+      transition:.3s;
+      position:relative;
+      overflow:hidden;
+    }
+    .contact-card::before{
+      content:'';
+      position:absolute;
+      top:-2px;left:-2px;right:-2px;bottom:-2px;
+      background:linear-gradient(45deg,var(--neonCyan),var(--neonBlue),var(--neonPurple),var(--neonPink));
+      border-radius:32px;
+      z-index:-2;
+      animation:borderGlow 3s ease infinite;
+      background-size:300%;
+      opacity:0;
+      transition:.3s;
+    }
+    .contact-card:hover::before{opacity:1;}
+    .contact-card:hover{transform:translateY(-5px);}
+    @keyframes borderGlow{0%{background-position:0%}50%{background-position:100%}100%{background-position:0%}}
+    
+    .role-badge{
+      display:inline-block;
+      padding:8px 20px;
+      border-radius:50px;
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      margin-bottom:25px;
+      letter-spacing:1px;
+    }
+    .role-owner{
+      background:linear-gradient(45deg,#ffaa00,#ff5500);
+      color:white;
+      box-shadow:0 0 20px #ffaa00;
+    }
+    .role-admin{
+      background:linear-gradient(45deg,var(--neonCyan),var(--neonBlue));
+      color:white;
+      box-shadow:0 0 20px var(--neonCyan);
+    }
+    .contact-username{
+      font-size:36px;
+      font-weight:800;
+      font-family:'Courier New',monospace;
+      color:var(--neonCyan);
+      margin:25px 0;
+      padding:20px;
+      background:rgba(0,0,0,0.4);
+      border:1px solid var(--border);
+      border-radius:20px;
+      cursor:pointer;
+      transition:.3s;
+      text-align:center;
+    }
+    .contact-username:hover{
+      background:rgba(64,224,208,0.1);
+      border-color:var(--neonCyan);
+      transform:scale(1.02);
+      box-shadow:0 0 30px var(--neonCyan);
+    }
+    .contact-badge{
+      display:inline-block;
+      background:rgba(64,224,208,0.2);
+      border:1px solid var(--border);
+      padding:8px 16px;
+      border-radius:50px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .discord-card{
+      background:rgba(88,101,242,0.15);
+      border:1px solid #5865F2;
+      border-radius:30px;
+      padding:50px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:20px;
+      grid-column:span 2;
+    }
+    .discord-button{
+      background:#5865F2;
+      color:white;
+      border:none;
+      padding:18px 40px;
+      border-radius:50px;
+      font-size:18px;
+      font-weight:700;
+      text-decoration:none;
+      transition:.3s;
+    }
+    .discord-button:hover{
+      background:#4752C4;
+      transform:translateY(-3px);
+      box-shadow:0 10px 30px #5865F2;
+    }
+
+    /* COMPARISON TABLE */
+    .comparison-section{
+      background:rgba(20,30,50,0.5);
+      backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      border-radius:30px;
+      padding:40px;
+      margin:40px 0;
+    }
+    .comparison-table{
+      width:100%;
+      border-collapse:collapse;
+      background:rgba(0,0,0,0.2);
+      border-radius:20px;
+      overflow:hidden;
+    }
+    .comparison-table th{
+      background:linear-gradient(90deg,var(--neonBlue),var(--neonCyan));
+      padding:20px;
+      color:white;
+    }
+    .comparison-table td{
+      padding:15px 20px;
+      border-bottom:1px solid var(--border);
+      color:var(--muted);
+    }
+
+    /* FOOTER */
+    .main-footer{
+      background:rgba(10,20,30,0.8);
+      backdrop-filter:blur(10px);
+      border-top:1px solid var(--border);
+      padding:60px 0 30px;
+      margin-top:60px;
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:40px;
+      margin-bottom:40px;
+    }
+    .footer-col h4{
+      color:var(--neonCyan);
+      margin-bottom:20px;
+      font-size:18px;
+    }
+    .footer-col ul li{
+      list-style:none;
+      margin-bottom:12px;
+    }
+    .footer-col ul li a{
+      color:var(--muted);
+      text-decoration:none;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .footer-col ul li a:hover{
+      color:var(--neonCyan);
+      padding-left:5px;
+    }
+    .footer-bottom{
+      text-align:center;
+      padding-top:30px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* TOAST */
+    .toast{
+      position:fixed;
+      bottom:30px;left:50%;
+      transform:translateX(-50%) translateY(100px);
+      background:linear-gradient(45deg,rgba(16,42,67,0.9),rgba(10,30,50,0.9));
+      border:1px solid var(--neonCyan);
+      border-radius:20px;
+      padding:16px 30px;
+      color:white;
+      z-index:10000;
+      opacity:0;
+      transition:.4s;
+      backdrop-filter:blur(10px);
+    }
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+    @media (max-width:768px){
+      .contact-grid{grid-template-columns:1fr;}
+      .discord-card{grid-column:span 1;}
+      .dashboard-menu{width:250px;}
+      .hero-content{padding:30px;}
+      .plan-header{flex-direction:column;align-items:flex-start;}
+      .plan-price{width:100%;}
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <canvas id="canvas-3d"></canvas>
+  <div class="toast" id="toast"></div>
+
+  <div class="app">
+    <header class="main-header">
+      <div class="menu-container">
+        <div class="logo">
+          <span class="logo-icon">🔐</span>
+          <div class="logo-text">
+            <h1>SecureNET</h1>
+            <span>VPN Solutions</span>
+          </div>
+        </div>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- DASHBOARD MENU -->
+    <div class="dashboard-menu" id="dashboardMenu">
+      <div class="dashboard-header">MENÚ PRINCIPAL</div>
+      
+      <div class="dashboard-item active" onclick="switchTab('welcome');toggleMenu()">
+        <span>🏠</span> Inicio
+      </div>
+      <div class="dashboard-item" onclick="switchTab('locations');toggleMenu()">
+        <span>🌍</span> Ubicaciones
+      </div>
+      <div class="dashboard-item" onclick="switchTab('plans');toggleMenu()">
+        <span>📋</span> Planes
+      </div>
+      <div class="dashboard-item" onclick="switchTab('tools');toggleMenu()">
+        <span>🛠️</span> Herramientas
+      </div>
+      <div class="dashboard-item" onclick="switchTab('social');toggleMenu()">
+        <span>📱</span> Redes Sociales
+      </div>
+      <div class="dashboard-item" onclick="switchTab('comparison');toggleMenu()">
+        <span>📊</span> Comparativa
+      </div>
+      <div class="dashboard-item" onclick="switchTab('contact');toggleMenu()">
+        <span>👤</span> Contacto
+      </div>
+
+      <div class="dashboard-footer">
+        <a href="https://discord.gg/ZSg4CrbEXR" target="_blank" class="dashboard-item" style="margin-bottom:10px;">
+          <span>🎮</span> Discord
+        </a>
+        <div class="theme-selector-dashboard">
+          <button class="theme-btn-dashboard active" onclick="setTheme('dark');event.stopPropagation()">🌙 Dark</button>
+          <button class="theme-btn-dashboard" onclick="setTheme('light');event.stopPropagation()">☀️ Light</button>
+          <button class="theme-btn-dashboard" onclick="setTheme('hacker');event.stopPropagation()">💻 Hacker</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-spacer"></div>
+
+    <main class="container">
+      <!-- WELCOME TAB -->
+      <div id="welcome-tab" class="tab-content active">
+        <section class="welcome-section">
+          <div class="hero-content">
+            <span class="hero-badge">⚡ NEXT GEN VPN</span>
+            <h1 class="hero-title">Conecta con <span class="gradient-text">seguridad total</span></h1>
+            <p class="hero-description">Protección Anti-DDoS • Baja latencia • Gaming VPN • 6 ubicaciones globales</p>
+            <div class="hero-stats">
+              <div class="stat-item"><div class="stat-number">6</div><div>Ubicaciones</div></div>
+              <div class="stat-item"><div class="stat-number">99.9%</div><div>Uptime</div></div>
+              <div class="stat-item"><div class="stat-number">24/7</div><div>Soporte</div></div>
+            </div>
+            <button class="btn-primary" onclick="switchTab('locations');toggleMenu()">Comenzar ahora →</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- LOCATIONS TAB -->
+      <div id="locations-tab" class="tab-content">
+        <h2 class="section-title">🌍 Nuestras Ubicaciones</h2>
+        <p class="section-subtitle" style="text-align:center;color:var(--muted);margin-bottom:30px;">Selecciona una ubicación para ver sus planes</p>
+        <div id="locations-grid" class="locations-grid"></div>
+        <div id="selected-location-plans" class="plans-showcase" style="display:none;">
+          <div class="selected-location-title" style="display:flex;align-items:center;gap:15px;margin-bottom:30px;padding:20px;background:rgba(16,42,67,0.5);border-radius:16px;">
+            <button class="back-button" onclick="clearSelectedLocation()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:50px;cursor:pointer;">← Volver</button>
+            <h3 id="selected-location-name" style="color:var(--neonCyan);"></h3>
+          </div>
+          <div id="location-plans-grid" class="plans-grid"></div>
+        </div>
+      </div>
+
+      <!-- PLANS TAB -->
+      <div id="plans-tab" class="tab-content">
+        <h2 class="section-title">📋 Todos los Planes</h2>
+        <p class="section-subtitle" style="text-align:center;color:var(--muted);margin-bottom:30px;">Explora todos nuestros planes por ubicación</p>
+        <div id="all-locations-plans"></div>
+      </div>
+
+      <!-- TOOLS TAB -->
+      <div id="tools-tab" class="tab-content">
+        <div class="coming-soon-card">
+          <h2 class="section-title" style="position:relative;z-index:2;">🌐 WHAT'S MY IP</h2>
+          <div class="coming-soon-display">0.0.0.0</div>
+          <button class="coming-soon-button" disabled style="background:#444;color:#888;border:none;padding:16px 40px;border-radius:50px;cursor:not-allowed;">⏳ PRÓXIMAMENTE</button>
+        </div>
+        <div class="coming-soon-card">
+          <h2 class="section-title" style="position:relative;z-index:2;">🔍 WHOIS LOOKUP</h2>
+          <div style="margin:30px 0;filter:blur(2px);">
+            <input type="text" style="background:#333;border:1px solid #444;color:#666;padding:15px;border-radius:16px;width:100%;" value="google.com" disabled>
+          </div>
+          <button class="coming-soon-button" disabled style="background:#444;color:#888;border:none;padding:16px 40px;border-radius:50px;cursor:not-allowed;">⏳ PRÓXIMAMENTE</button>
+        </div>
+      </div>
+
+      <!-- SOCIAL MEDIA TAB - NUEVO -->
+      <div id="social-tab" class="tab-content">
+        <div class="social-section">
+          <h2 class="section-title">📱 Mis Redes Sociales</h2>
+          <p class="section-subtitle" style="text-align:center;color:var(--muted);">Sígueme en todas mis plataformas</p>
+          
+          <div class="social-grid">
+            <a href="https://www.instagram.com/legionfreeze" target="_blank" class="social-card">
+              <div class="social-icon instagram">📸</div>
+              <div class="social-info">
+                <div class="social-name">Instagram</div>
+                <div class="social-handle">@legionfreeze</div>
+              </div>
+              <span style="color:var(--neonCyan);">→</span>
+            </a>
+
+            <a href="https://www.youtube.com/@Bestxlagger/videos" target="_blank" class="social-card">
+              <div class="social-icon youtube">🎥</div>
+              <div class="social-info">
+                <div class="social-name">YouTube</div>
+                <div class="social-handle">@Bestxlagger</div>
+              </div>
+              <span style="color:var(--neonCyan);">→</span>
+            </a>
+
+            <a href="https://www.tiktok.com/@legionfreeze" target="_blank" class="social-card">
+              <div class="social-icon tiktok">🎵</div>
+              <div class="social-info">
+                <div class="social-name">TikTok</div>
+                <div class="social-handle">@legionfreeze</div>
+              </div>
+              <span style="color:var(--neonCyan);">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPARISON TAB -->
+      <div id="comparison-tab" class="tab-content">
+        <div class="comparison-section">
+          <h2 class="section-title">📊 Tabla Comparativa</h2>
+          <table class="comparison-table">
+            <thead><tr><th>Característica</th><th>🟦 BASIC</th><th>⭐ STANDARD</th><th>💎 PREMIUM</th><th>🌐 DUAL</th></tr></thead>
+            <tbody>
+              <tr><td>Precio</td><td>$5.99</td><td>$12.99</td><td>$19.99</td><td>$24.99</td></tr>
+              <tr><td>Usuarios</td><td>1</td><td>3</td><td>6</td><td>4</td></tr>
+              <tr><td>Ubicaciones</td><td>1</td><td>1</td><td>1</td><td>2</td></tr>
+              <tr><td>Cambios/mes</td><td>1</td><td>1</td><td>1</td><td>No</td></tr>
+              <tr><td>Anti-DDoS</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+              <tr><td>Gaming VPN</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CONTACT TAB -->
+      <div id="contact-tab" class="tab-content">
+        <h2 class="section-title">👤 Contacto</h2>
+        <div class="contact-grid">
+          <!-- OWNER CARD -->
+          <div class="contact-card">
+            <div class="role-badge role-owner">👑 OWNER / FUNDADOR</div>
+            <h3 style="color:var(--neonCyan);font-size:24px;margin-bottom:5px;">xnetvpn</h3>
+            <div class="contact-badge">CREADOR DE SECURENET</div>
+            <div class="contact-username" onclick="copyUsername('@xnetvpn')">
+              @xnetvpn
+            </div>
+            <p style="color:var(--muted);margin-top:20px;">⭐ Disponibilidad 24/7 • Soporte directo</p>
+          </div>
+
+          <!-- ADMIN CARD -->
+          <div class="contact-card">
+            <div class="role-badge role-admin">🛡️ ADMINISTRADOR</div>
+            <h3 style="color:var(--neonCyan);font-size:24px;margin-bottom:5px;">xxiizx</h3>
+            <div class="contact-badge">SOPORTE TÉCNICO</div>
+            <div class="contact-username" onclick="copyUsername('@xxiizx')">
+              @xxiizx
+            </div>
+            <p style="color:var(--muted);margin-top:20px;">⚡ Gestión de servidores • Respuesta rápida</p>
+          </div>
+
+          <!-- DISCORD CARD -->
+          <div class="discord-card">
+            <div style="font-size:64px;">🎮</div>
+            <h3 style="color:white;font-size:28px;">Comunidad Discord</h3>
+            <p style="color:#b0d0ff;font-size:16px;">+500 miembros activos • Soporte 24/7 • Ofertas exclusivas</p>
+            <div style="display:flex;gap:20px;margin:20px 0;">
+              <span style="background:rgba(255,255,255,0.1);padding:8px 16px;border-radius:50px;">@xnetvpn</span>
+              <span style="background:rgba(255,255,255,0.1);padding:8px 16px;border-radius:50px;">@xxiizx</span>
+            </div>
+            <a href="https://discord.gg/ZSg4CrbEXR" target="_blank" class="discord-button">UNIRSE AL SERVIDOR</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="main-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h4>SecureNET</h4>
+            <ul>
+              <li><a onclick="switchTab('welcome')">Inicio</a></li>
+              <li><a onclick="switchTab('locations')">Ubicaciones</a></li>
+              <li><a onclick="switchTab('plans')">Planes</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Recursos</h4>
+            <ul>
+              <li><a onclick="switchTab('tools')">Herramientas</a></li>
+              <li><a onclick="switchTab('social')">Redes Sociales</a></li>
+              <li><a onclick="switchTab('comparison')">Comparativa</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contacto</h4>
+            <ul>
+              <li><span style="color:var(--muted);">Owner: @xnetvpn</span></li>
+              <li><span style="color:var(--muted);">Admin: @xxiizx</span></li>
+              <li><a onclick="switchTab('contact')">Contacto</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2024 SecureNET • VPN de alto rendimiento</p>
+          <p style="margin-top:10px;font-size:12px;">Desarrollado por @xnetvpn & @xxiizx</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const DISCORD_LINK='https://discord.gg/ZSg4CrbEXR';
+    const planTypes=[
+      {name:'BASIC',class:'basic',icon:'🟦',price:'$5.99',users:'1 conexión',gaming:'COD/RDR/GTA friendly'},
+      {name:'STANDARD',class:'standard',icon:'⭐',price:'$12.99',users:'Hasta 3',gaming:'Optimizado gaming'},
+      {name:'PREMIUM',class:'premium',icon:'💎',price:'$19.99',users:'Hasta 6',gaming:'Máximo rendimiento'},
+      {name:'DUAL',class:'dual',icon:'🌐',price:'$24.99',users:'Hasta 4',gaming:'Doble ubicación'}
+    ];
+    const locations=[
+      {id:'los-angeles',name:'Los Angeles, CA',displayName:'LOS ANGELES',flag:'🇺🇸',description:'Costa Oeste USA - Ideal para gaming',status:'available',ping:45,comingSoon:false},
+      {id:'dallas',name:'Dallas, Texas',displayName:'DALLAS',flag:'🇺🇸',description:'Centro USA - Latencia ultra baja',status:'available',ping:35,comingSoon:false},
+      {id:'miami',name:'Miami, Florida',displayName:'MIAMI',flag:'🇺🇸',description:'Conectividad con Latinoamérica',status:'soon',ping:60,comingSoon:true},
+      {id:'paris',name:'Paris, Francia',displayName:'PARIS',flag:'🇫🇷',description:'Primera ubicación europea',status:'soon',ping:90,comingSoon:true},
+      {id:'new-york',name:'New York, NY',displayName:'NEW YORK',flag:'🇺🇸',description:'Costa Este - Negocios',status:'soon',ping:50,comingSoon:true},
+      {id:'chicago',name:'Chicago, Illinois',displayName:'CHICAGO',flag:'🇺🇸',description:'Medio Oeste - Gaming',status:'soon',ping:40,comingSoon:true}
+    ];
+    let selectedLocation=null;
+
+    // 3D ANIMATION
+    const canvas=document.getElementById('canvas-3d'),ctx=canvas.getContext('2d');
+    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+    const particles=[];
+    for(let i=0;i<70;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,z:Math.random()*1000,size:Math.random()*2+1,speed:Math.random()*2+1});
+    function animate3D(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const theme=document.body.dataset.theme,color=theme==='hacker'?'#0f0':theme==='light'?'#06f':'#0ff';
+      particles.forEach(p=>{
+        p.z-=p.speed;if(p.z<=0){p.z=1000;p.x=Math.random()*canvas.width;p.y=Math.random()*canvas.height;}
+        const scale=500/p.z,x2d=(p.x-canvas.width/2)*scale+canvas.width/2,y2d=(p.y-canvas.height/2)*scale+canvas.height/2;
+        ctx.beginPath();ctx.arc(x2d,y2d,p.size*scale,0,Math.PI*2);ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=10;ctx.fill();
+      });requestAnimationFrame(animate3D);
+    }
+    animate3D();
+    window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+
+    function toggleMenu(){document.getElementById('hamburger').classList.toggle('active');document.getElementById('dashboardMenu').classList.toggle('open');}
+    function setTheme(theme){document.body.dataset.theme=theme;document.querySelectorAll('.theme-btn-dashboard').forEach(b=>b.classList.remove('active'));document.querySelector(`.theme-btn-dashboard[onclick*="${theme}"]`).classList.add('active');}
+    
+    function renderLocationsGrid(){
+      document.getElementById('locations-grid').innerHTML=locations.map(l=>`
+        <div class="location-card ${selectedLocation===l.id?'selected':''}" onclick="selectLocation('${l.id}')">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+            <h3>${l.flag} ${l.displayName}</h3>
+            <span class="status-badge ${l.status==='available'?'status-available':'status-soon'}">${l.status==='available'?'✅ DISPONIBLE':'⏳ PRÓXIMAMENTE'}</span>
+          </div>
+          <p style="color:var(--muted);margin-bottom:20px;">${l.description}</p>
+          <div style="display:flex;align-items:center;gap:8px;"><span>📡 ${l.ping}ms</span><div style="flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;"><div style="width:${Math.min(100,100-l.ping/2)}%;height:100%;background:linear-gradient(90deg,var(--neonCyan),var(--neonBlue));border-radius:2px;"></div></div></div>
+        </div>`).join('');
+    }
+
+    function selectLocation(id){
+      selectedLocation=id;const l=locations.find(l=>l.id===id);
+      document.getElementById('selected-location-plans').style.display='block';
+      document.getElementById('selected-location-name').textContent=`${l.flag} ${l.displayName}`;
+      document.getElementById('location-plans-grid').innerHTML=planTypes.map(p=>`
+        <div class="plan-card ${p.class}">
+          <div class="plan-header">
+            <div class="plan-name">${p.icon} ${p.name}</div>
+            <div class="plan-price">${p.price}</div>
+          </div>
+          <div class="plan-features">
+            <div class="feature-item"><span>👥</span><div><div>Usuarios</div><small>${p.users}</small></div></div>
+            <div class="feature-item"><span>🌍</span><div><div>Ubicación</div><small>${l.displayName}</small></div></div>
+            <div class="feature-item"><span>🛡️</span><div><div>Protección</div><small>Anti-DDoS</small></div></div>
+            <div class="feature-item"><span>🎮</span><div><div>Gaming</div><small>${p.gaming}</small></div></div>
+          </div>
+          ${!l.comingSoon?`<a href="${DISCORD_LINK}" target="_blank" class="plan-button">COMPRAR ${p.name}</a>`:'<button class="plan-button" disabled>PRÓXIMAMENTE</button>'}
+        </div>`).join('');
+      renderLocationsGrid();
+    }
+
+    function clearSelectedLocation(){selectedLocation=null;document.getElementById('selected-location-plans').style.display='none';renderLocationsGrid();}
+    
+    function renderAllLocationsPlans(){
+      document.getElementById('all-locations-plans').innerHTML=locations.map(l=>`
+        <div style="margin:50px 0 30px;"><h2 style="color:var(--neonCyan);font-size:28px;">${l.flag} ${l.displayName}</h2><p style="color:var(--muted);">${l.description}</p></div>
+        <div class="plans-grid">${planTypes.map(p=>`
+          <div class="plan-card ${p.class}">
+            <div class="plan-header">
+              <div class="plan-name">${p.icon} ${p.name}</div>
+              <div class="plan-price">${p.price}</div>
+            </div>
+            <div class="plan-features">
+              <div class="feature-item"><span>👥</span><div><div>Usuarios</div><small>${p.users}</small></div></div>
+              <div class="feature-item"><span>🌍</span><div><div>Ubicación</div><small>${l.displayName}</small></div></div>
+              <div class="feature-item"><span>🛡️</span><div><div>Protección</div><small>Anti-DDoS</small></div></div>
+              <div class="feature-item"><span>🎮</span><div><div>Gaming</div><small>${p.gaming}</small></div></div>
+            </div>
+            ${!l.comingSoon?`<a href="${DISCORD_LINK}" target="_blank" class="plan-button">COMPRAR ${p.name}</a>`:'<button class="plan-button" disabled>PRÓXIMAMENTE</button>'}
+          </div>`).join('')}</div>`).join('');
+    }
+
+    function switchTab(tabId){
+      document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+      document.getElementById(tabId+'-tab').classList.add('active');
+      document.querySelectorAll('.dashboard-item').forEach(i=>i.classList.remove('active'));
+      document.querySelector(`.dashboard-item[onclick*="${tabId}"]`).classList.add('active');
+      if(tabId==='locations')renderLocationsGrid();
+      if(tabId==='plans')renderAllLocationsPlans();
+      if(window.innerWidth<768)toggleMenu();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function copyUsername(username){
+      navigator.clipboard.writeText(username).then(()=>showToast(`✅ Copiado: ${username}`));
+    }
+    function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+
+    window.onload=()=>{
+      renderLocationsGrid();
+      document.querySelectorAll('.dashboard-item').forEach(i=>i.addEventListener('click',()=>{if(window.innerWidth<768)toggleMenu();}));
+      window.toggleMenu=toggleMenu;window.setTheme=setTheme;window.switchTab=switchTab;
+      window.selectLocation=selectLocation;window.clearSelectedLocation=clearSelectedLocation;
+      window.copyUsername=copyUsername;
+    };
+  </script>
+</body>
+</html>
